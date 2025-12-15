@@ -1,0 +1,9 @@
+gradio
+transformers
+torch
+langchain
+langchain-core
+langchain-openai
+langchain-community
+sentence-transformers
+lang-detect
