@@ -1,9 +1,18 @@
-gradio
+# stt libraries
 transformers
 torch
+soundfile
+num2words
+faster-whisper
+
 langchain
 langchain-core
 langchain-openai
 langchain-community
 sentence-transformers
-lang-detect
+#lang-detect
+
+
+
+# temp ui
+gradio==4.14.0
