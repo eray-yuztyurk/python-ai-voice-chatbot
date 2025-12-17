@@ -16,6 +16,3 @@ DEFAULT_OPEN_BROWSER = True
 # File paths
 DEFAULT_AUDIO_OUTPUT_DIR = "./data/audio/output_audio"
 DEFAULT_AUDIO_INPUT_DIR = "./data/audio/input_audio"
-
-# Supported languages for TTS
-SUPPORTED_LANGUAGES = ["en", "tr", "de", "fr", "es"]

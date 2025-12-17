@@ -44,9 +44,11 @@ src/
 
 ## Configuration
 
-The application uses **automatic fallback chains** for reliability. You can customize these settings in `.env`:
+The application uses **automatic fallback chains** - models are tried in order until one works. These chains are built-in and work automatically. 
 
-### Required API Keys
+What you **can** customize in `.env`:
+
+### API Keys (Required for cloud models)
 ```bash
 GROQ_API_KEY=gsk_...              # Get free at: https://console.groq.com/
 GOOGLE_API_KEY=AIza...            # Get free at: https://makersuite.google.com/app/apikey
@@ -71,7 +73,7 @@ AUDIO_INPUT_DIR=./data/audio/input_audio
 
 ## How It Works
 
-### Automatic Fallback Chains
+### Automatic Fallback Chains (Built-in, cannot be changed via .env)
 
 **LLM (Language Model):**
 1. **Groq API** (llama-3.3-70b) - Fast, requires API key
@@ -79,11 +81,10 @@ AUDIO_INPUT_DIR=./data/audio/input_audio
 3. **Local TinyLlama** - Offline fallback, slow but always works
 
 **STT (Speech-to-Text):**
-- Fixed: **Faster-Whisper Base** model
-- To change: Edit `STT_MODEL` in [src/services/chatbot.py](src/services/chatbot.py)
+- Uses: **Faster-Whisper Base** model (hardcoded)
 
 **TTS (Text-to-Speech):**
-1. **Edge-TTS** - High quality, online (respects voice settings)
+1. **Edge-TTS** - High quality, online (respects .env voice settings)
 2. **gTTS** - Google TTS, online fallback
 3. **Piper** - Offline fallback
 
@@ -93,24 +94,65 @@ AUDIO_INPUT_DIR=./data/audio/input_audio
 
 ## Tech Stack
 
-- **Speech-to-Text**: Faster-Whisper (CTranslate2 optimized)
-- **LLM**: LangChain (Groq, Gemini, HuggingFace)
-- **Text-to-Speech**: Edge-TTS, gTTS, Piper
-- **Interface**: Gradio 4.14.0
-- **Language Detection**: fasttext, langid
+### Core Technologies
 
-## Changing Models
+![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=flat&logo=python&logoColor=white)
+![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=flat&logo=pytorch&logoColor=white)
+![Gradio](https://img.shields.io/badge/Gradio-4.14.0-FF7C00?style=flat&logo=gradio&logoColor=white)
 
-**To change STT model:** Edit `STT_MODEL` in [src/services/chatbot.py](src/services/chatbot.py#L12)
+### AI/ML Frameworks & Libraries
+
+![LangChain](https://img.shields.io/badge/🦜_LangChain-Framework-121212?style=flat)
+![Transformers](https://img.shields.io/badge/🤗_Transformers-yellow?style=flat)
+![Faster Whisper](https://img.shields.io/badge/Faster--Whisper-CTranslate2-blue?style=flat)
+
+### APIs & Services
+
+![Groq](https://img.shields.io/badge/Groq_API-LLaMA_3.3-F55036?style=flat)
+![Google Gemini](https://img.shields.io/badge/Google_Gemini-1.5_Flash-4285F4?style=flat&logo=google&logoColor=white)
+![Edge TTS](https://img.shields.io/badge/Edge--TTS-Microsoft-00A4EF?style=flat)
+
+### Complete Library List
+
+**Speech-to-Text:**
+- faster-whisper (CTranslate2 optimized)
+- transformers (HuggingFace Whisper models)
+- torch, accelerate, soundfile, librosa
+
+**Language Models:**
+- langchain-groq (Groq API integration)
+- langchain-google-genai (Gemini integration)
+- langchain-huggingface (Local TinyLlama)
+
+**Text-to-Speech:**
+- edge-tts (Microsoft Edge TTS)
+- gTTS (Google Text-to-Speech)
+- piper (offline TTS)
+
+**Language Detection:**
+- fasttext (primary)
+- langid (fallback)
+
+**Utilities:**
+- gradio (web interface)
+- scipy (audio I/O)
+- python-dotenv (environment config)
+
+## Advanced: Changing Models (requires code editing)
+
+If you want different models than the defaults, you need to edit the source code:
+
+**Change STT model:** Edit line 16 in [src/services/chatbot.py](src/services/chatbot.py#L16)
 ```python
-STT_MODEL = "Faster-Whisper - Base"  # Change to: Small, Medium, Large-V2, etc.
+STT_MODEL = "Faster-Whisper - Base"  # Available: Tiny, Base, Small, Medium, Large-V2
 ```
 
-**To change LLM models:** Edit functions in [src/services/llm.py](src/services/llm.py)
-- `api_groq_initializer()` - Line 73
-- `api_gemini_initializer()` - Line 48
+**Change LLM models or order:** Edit [src/services/llm.py](src/services/llm.py)
+- Groq model: Line 73 in `api_groq_initializer()`
+- Gemini model: Line 48 in `api_gemini_initializer()`
+- Fallback order: Lines 103-130 in `llm_initializer_with_fallback()`
 
-**Available models listed in:** [src/config/ai_model_names.py](src/config/ai_model_names.py)
+**All available models:** See [src/config/ai_model_names.py](src/config/ai_model_names.py)
 
 ## Troubleshooting
 
