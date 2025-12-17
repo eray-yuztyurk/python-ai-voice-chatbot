@@ -1,13 +1,11 @@
 """
 User Settings (loaded from .env)
-Values that can be customized per environment
+Only includes settings that actually affect the application behavior
 """
 
 import os
 from dotenv import load_dotenv
 from .constants import (
-    DEFAULT_STT_MODEL_NAME,
-    DEFAULT_LLM_PROVIDER,
     DEFAULT_TTS_RATE,
     DEFAULT_TTS_VOLUME,
     DEFAULT_TTS_PITCH,
@@ -20,15 +18,9 @@ from .constants import (
 
 load_dotenv()
 
-# API Keys (user must provide)
+# API Keys (required for cloud LLM services)
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-
-# Model selection (user can override)
-DEFAULT_STT_MODEL = os.getenv("DEFAULT_STT_MODEL", DEFAULT_STT_MODEL_NAME)
-LLM_PROVIDER = os.getenv("DEFAULT_LLM_PROVIDER", DEFAULT_LLM_PROVIDER)
-
-# File paths (user can override)
 AUDIO_OUTPUT_DIR = os.getenv("AUDIO_OUTPUT_DIR", DEFAULT_AUDIO_OUTPUT_DIR)
 AUDIO_INPUT_DIR = os.getenv("AUDIO_INPUT_DIR", DEFAULT_AUDIO_INPUT_DIR)
 

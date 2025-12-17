@@ -3,11 +3,7 @@ Application Constants
 Fixed values that don't change across environments
 """
 
-# Model defaults
-DEFAULT_STT_MODEL_NAME = "Faster-Whisper - Base"
-DEFAULT_LLM_PROVIDER = "groq"
-
-# TTS voice settings
+# TTS voice settings (only for Edge-TTS engine)
 DEFAULT_TTS_RATE = "+12%"
 DEFAULT_TTS_VOLUME = "+5%"
 DEFAULT_TTS_PITCH = "+0Hz"

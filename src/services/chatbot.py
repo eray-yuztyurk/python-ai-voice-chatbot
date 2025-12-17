@@ -6,12 +6,14 @@ import scipy.io.wavfile as wav
 from src.services.stt import stt_inference
 from src.services.llm import chat_with_llm, llm_initializer_with_fallback
 from src.services.tts import tts_converter_with_fallback
-from src.config.settings import DEFAULT_STT_MODEL
 
 print("🔄 Initializing LLM...")
 llm_model = llm_initializer_with_fallback()
 
 auto_audio = True
+
+# Fixed STT model (change here if needed)
+STT_MODEL = "Faster-Whisper - Base"
 
 def transcribe_audio(audio_input):
     """
@@ -30,7 +32,7 @@ def transcribe_audio(audio_input):
     temp_audio = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
     wav.write(temp_audio.name, sample_rate, audio_array)
     
-    user_text = stt_inference(DEFAULT_STT_MODEL, temp_audio.name)
+    user_text = stt_inference(STT_MODEL, temp_audio.name)
     os.remove(temp_audio.name)
     
     return user_text if user_text else "❌ Could not transcribe audio"
