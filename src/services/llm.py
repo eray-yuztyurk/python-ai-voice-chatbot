@@ -1,23 +1,24 @@
 
 """
-llm.py - LLM Chatbot with Fallback (Gemini → Groq → Local)
+LLM service with fallback: Gemini → Groq → Local
 """
 
 import os
 from dotenv import load_dotenv
 
-# Load environment variables
 load_dotenv()
 
 llm_models_cache = {}
 
 def local_chatbot_initializer(model_name="TinyLlama/TinyLLama-1.1B-Chat-v1.0"):
     """
-    Initialize a local chatbot model using Hugging Face Transformers.
+    Initialize a local LLM using HuggingFace Transformers (works offline).
+    
     Args:
-        model_name (str): The name of the model to load.
+        model_name (str): HuggingFace model identifier
+        
     Returns:
-        pipeline: The loaded chatbot pipeline.
+        ChatHuggingFace: Initialized local chat model
     """
     from transformers import pipeline
     from langchain_huggingface import HuggingFacePipeline, ChatHuggingFace
@@ -42,11 +43,13 @@ def local_chatbot_initializer(model_name="TinyLlama/TinyLLama-1.1B-Chat-v1.0"):
 
 def api_gemini_initializer(model_name="gemini-1.5-flash"):
     """
-    Initialize the Gemini API client.
+    Initialize Google Gemini API client for LLM inference.
+    
     Args:
-        api_key (str): The API key for authentication.
+        model_name (str): Name of the Gemini model to use
+        
     Returns:
-        GeminiClient: The initialized Gemini API client.
+        ChatGoogleGenerativeAI: Initialized Gemini chat model
     """
     from langchain_google_genai import ChatGoogleGenerativeAI
 
@@ -65,11 +68,13 @@ def api_gemini_initializer(model_name="gemini-1.5-flash"):
 
 def api_groq_initializer(model_name="llama-3.3-70b-versatile"):
     """
-    Initialize the Groq API client.
+    Initialize the Groq API client for fast LLM inference.
+    
     Args:
-        api_key (str): The API key for authentication.
+        model_name (str): Name of the Groq model to use
+        
     Returns:
-        GroqClient: The initialized Groq API client.
+        ChatGroq: Initialized Groq chat model
     """
     from langchain_groq import ChatGroq
 
@@ -89,20 +94,14 @@ def api_groq_initializer(model_name="llama-3.3-70b-versatile"):
 
 def llm_initializer_with_fallback():
     """
-    Initialize a chatbot model with fallback options.
-    Tries: Gemini → Groq → Local TinyLlama
+    Initialize LLM with automatic fallback mechanism.
+    
+    Tries in order: Groq API → Gemini API → Local TinyLlama
+    
     Returns:
-        chat_model: The initialized chatbot model.
+        chat_model: Initialized LLM instance, or None if all options fail
     """
-    # Try Gemini (fast, free tier available)
-    if os.getenv("GOOGLE_API_KEY"):
-        try:
-            chat_model = api_gemini_initializer()
-            print("✅ Using Gemini API")
-            return chat_model
-        except Exception as e:
-            print(f"⚠️ Gemini failed: {e}")
-
+    
     # Try Groq (very fast, free tier available)
     if os.getenv("GROQ_API_KEY"):
         try:
@@ -112,6 +111,15 @@ def llm_initializer_with_fallback():
         except Exception as e:
             print(f"⚠️ Groq failed: {e}")
     
+    # Try Gemini (fast, free tier available)
+    if os.getenv("GOOGLE_API_KEY"):
+        try:
+            chat_model = api_gemini_initializer()
+            print("✅ Using Gemini API")
+            return chat_model
+        except Exception as e:
+            print(f"⚠️ Gemini failed: {e}")
+
     # Try local model (slow, but works offline)
     try:
         chat_model = local_chatbot_initializer()

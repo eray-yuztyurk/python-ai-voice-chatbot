@@ -1,7 +1,15 @@
 import langid
 
-# detect the language of the given text
 def detect_text_language(text):
+    """
+    Detect language of input text using fasttext (primary) or langid (fallback).
+    
+    Args:
+        text (str): Text to analyze
+        
+    Returns:
+        str: ISO 639-1 language code (e.g., 'en', 'tr', 'de')
+    """
     # Try fasttext first (better accuracy), fallback to langid
     try:
         import fasttext

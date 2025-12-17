@@ -66,5 +66,17 @@ junit-*.xml
 # Local config
 *.local
 
+# AI project specific
+data/audio/output_audio/*.mp3
+data/audio/output_audio/*.wav
+flagged/
+*.onnx
+*.bin
+models/
+gradio_cached_examples/
+
+# Downloaded models cache
+~/.cache/huggingface/
+
 # GitHub
 .github/

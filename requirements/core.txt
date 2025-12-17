@@ -1,3 +1,0 @@
-# Core dependencies - minimum to run the application
-numpy
-gradio==4.14.0

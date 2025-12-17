@@ -2,7 +2,7 @@
 Speech-to-Text (STT) Inference Module
 """
 from transformers import pipeline
-from config.ai_model_names import transformers_whisper_stt_models, faster_whisper_stt_models, stt_models
+from src.config.ai_model_names import transformers_whisper_stt_models, faster_whisper_stt_models, stt_models
 from faster_whisper import WhisperModel
 import gradio as gr
 
@@ -53,8 +53,17 @@ def load_stt_faster_whisper_model(model_name):
         stt_faster_whisper_loaded_models[model_name] = model
         return model
     
-def stt_transformers_inference(model_name, audio_file_path):   
+def stt_transformers_inference(model_name, audio_file_path):
+    """
+    Transcribe audio using HuggingFace Transformers Whisper models.
     
+    Args:
+        model_name (str): Name of the Whisper model to use
+        audio_file_path (str): Path to audio file
+        
+    Returns:
+        str: Transcribed text or error message
+    """
     try:
         pipeline_stt = load_stt_transformers_model(model_name)
         model_output = pipeline_stt(audio_file_path, batch_size=16, return_timestamps=True)
@@ -65,15 +74,16 @@ def stt_transformers_inference(model_name, audio_file_path):
     except Exception as e:
         return f"Error during STT inference: {str(e)}"
     
-def stt_faster_whisper_inference(model_name, audio_file_path):   
+def stt_faster_whisper_inference(model_name, audio_file_path):
     """
-    STT inference using Hugging Face Transformers pipeline.
-
+    Transcribe audio using optimized Faster-Whisper models (CTranslate2).
+    
     Args:
-        model_name (str): The name of the model to use.
-        audio_file_path (str): Path to the audio file.
+        model_name (str): Name of the Faster-Whisper model to use
+        audio_file_path (str): Path to audio file
+        
     Returns:
-        str: The transcribed text.
+        str: Transcribed text or error message
     """
 
     try:
@@ -88,13 +98,14 @@ def stt_faster_whisper_inference(model_name, audio_file_path):
 
 def stt_inference(model_name, audio_file_path):
     """
-    Main STT inference router. Directs to appropriate model type.
-
+    Main STT entry point - automatically routes to correct model type.
+    
     Args:
-        model_name (str): The name of the model to use.
-        audio_file_path (str): Path to the audio file.
+        model_name (str): Model name (determines Faster-Whisper vs Transformers)
+        audio_file_path (str): Path to audio file to transcribe
+        
     Returns:
-        str: The transcribed text.
+        str: Transcribed text
     """
 
     if "faster-whisper" in model_name.lower():
