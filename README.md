@@ -134,7 +134,7 @@ AUDIO_INPUT_DIR=./data/audio/input_audio
 </tr>
 </table>
 
-**Dependencies:** python-dotenv, scipy, transformers, torch, faster-whisper, langid, fasttext, gTTS, edge-tts, piper-tts, langchain-huggingface, langchain-groq, langchain-google-genai, gradio
+---
 
 ## Troubleshooting
 
