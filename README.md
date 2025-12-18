@@ -88,71 +88,42 @@ AUDIO_INPUT_DIR=./data/audio/input_audio
 2. **gTTS** - Google TTS, online fallback
 3. **Piper** - Offline fallback
 
-**Language Detection:**
-- Automatic (fasttext → langid)
-- Supports: English, Turkish, German, French, Spanish
+**Language Detection:** Automatic (fasttext → langid)
 
 ## Tech Stack
 
-### Core Technologies
+<table>
+<tr>
+<th>Core Technologies</th>
+<th>AI/ML Frameworks</th>
+<th>APIs & Services</th>
+</tr>
+<tr>
+<td>
 
 ![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=flat&logo=python&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=flat&logo=pytorch&logoColor=white)
-![Gradio](https://img.shields.io/badge/Gradio-4.14.0-FF7C00?style=flat&logo=gradio&logoColor=white)
+![Gradio](https://img.shields.io/badge/Gradio-FF7C00?style=flat&logo=gradio&logoColor=white)
 
-### AI/ML Frameworks & Libraries
+</td>
+<td>
 
-![LangChain](https://img.shields.io/badge/🦜_LangChain-Framework-121212?style=flat)
-![Transformers](https://img.shields.io/badge/🤗_Transformers-yellow?style=flat)
-![Faster Whisper](https://img.shields.io/badge/Faster--Whisper-CTranslate2-blue?style=flat)
+![LangChain](https://img.shields.io/badge/LangChain-121212?style=flat)
+![Transformers](https://img.shields.io/badge/Transformers-yellow?style=flat)
+![Faster Whisper](https://img.shields.io/badge/Faster_Whisper-blue?style=flat)
 
-### APIs & Services
+</td>
+<td>
 
-![Groq](https://img.shields.io/badge/Groq_API-LLaMA_3.3-F55036?style=flat)
-![Google Gemini](https://img.shields.io/badge/Google_Gemini-1.5_Flash-4285F4?style=flat&logo=google&logoColor=white)
-![Edge TTS](https://img.shields.io/badge/Edge--TTS-Microsoft-00A4EF?style=flat)
+![Groq](https://img.shields.io/badge/Groq-F55036?style=flat)
+![Gemini](https://img.shields.io/badge/Gemini-4285F4?style=flat&logo=google&logoColor=white)
+![Edge TTS](https://img.shields.io/badge/Edge_TTS-00A4EF?style=flat)
 
-### Complete Library List
+</td>
+</tr>
+</table>
 
-**Speech-to-Text:**
-- faster-whisper (CTranslate2 optimized)
-- transformers (HuggingFace Whisper models)
-- torch, accelerate, soundfile, librosa
-
-**Language Models:**
-- langchain-groq (Groq API integration)
-- langchain-google-genai (Gemini integration)
-- langchain-huggingface (Local TinyLlama)
-
-**Text-to-Speech:**
-- edge-tts (Microsoft Edge TTS)
-- gTTS (Google Text-to-Speech)
-- piper (offline TTS)
-
-**Language Detection:**
-- fasttext (primary)
-- langid (fallback)
-
-**Utilities:**
-- gradio (web interface)
-- scipy (audio I/O)
-- python-dotenv (environment config)
-
-## Advanced: Changing Models (requires code editing)
-
-If you want different models than the defaults, you need to edit the source code:
-
-**Change STT model:** Edit line 16 in [src/services/chatbot.py](src/services/chatbot.py#L16)
-```python
-STT_MODEL = "Faster-Whisper - Base"  # Available: Tiny, Base, Small, Medium, Large-V2
-```
-
-**Change LLM models or order:** Edit [src/services/llm.py](src/services/llm.py)
-- Groq model: Line 73 in `api_groq_initializer()`
-- Gemini model: Line 48 in `api_gemini_initializer()`
-- Fallback order: Lines 103-130 in `llm_initializer_with_fallback()`
-
-**All available models:** See [src/config/ai_model_names.py](src/config/ai_model_names.py)
+**Dependencies:** faster-whisper, transformers, torch, langchain-groq, langchain-google-genai, langchain-huggingface, edge-tts, gTTS, fasttext, langid, gradio, scipy, python-dotenv
 
 ## Troubleshooting
 

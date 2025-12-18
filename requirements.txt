@@ -5,9 +5,6 @@ scipy
 # Speech-to-Text (STT)
 transformers
 torch
-accelerate
-soundfile
-librosa
 faster-whisper
 
 # Text-to-Speech (TTS)
