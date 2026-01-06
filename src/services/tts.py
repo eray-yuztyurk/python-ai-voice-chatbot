@@ -1,4 +1,4 @@
-
+import os
 from src.utils.utils import EdgeTTS_DEFAULT_VOICES, PIPER_DEFAULT_VOICES, detect_text_language
 from src.config.settings import AUDIO_OUTPUT_DIR, TTS_RATE, TTS_VOLUME, TTS_PITCH
 
@@ -56,9 +56,16 @@ def tts_converter_with_fallback(file_output_name, text_input):
     try:
 
         import subprocess
+
+        voice = PIPER_DEFAULT_VOICES.get(lang_code, "en_US-amy-medium")
+        subprocess.run([
+            "python", "-m", "piper.download_voices", voice, "--download-dir", AUDIO_OUTPUT_DIR
+        ], check=False)
+
         subprocess.run([
             "piper",
-            "--model", PIPER_DEFAULT_VOICES.get(lang_code, "en_US-amy-medium"),
+            "--data-dir", os.path.abspath(AUDIO_OUTPUT_DIR),
+            "--model", voice,
             "--output_file", f"{AUDIO_OUTPUT_DIR}/{file_output_name}.wav",
         ],
         input=text_input.encode('utf-8'),
