@@ -38,7 +38,7 @@ EdgeTTS_DEFAULT_VOICES = {
 
 PIPER_DEFAULT_VOICES = {
     "en": "en_US-amy-medium",
-    "tr": "tr_TR-fettah-medium",
+    "tr": "tr_TR-dfki-medium",
     "de": "de_DE-thorsten-medium",
     "fr": "fr_FR-siwis-medium",
     "es": "es_ES-davefx-medium",
